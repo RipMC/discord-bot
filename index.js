@@ -1,23 +1,20 @@
 const {Client, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
+const path = require('node:path');
+const fs = require('node:fs');
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const eventsPath = path.join(__dirname, 'events');
+const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers] });
 
-const activities = [
-    "",
-    "Syncing your Discord roles!",
-    "ripmc.org",
-    "play.ripmc.org"
-]
+for (const file of eventFiles) {
+    const filePath = path.join(eventsPath, file);
+    const event = require(filePath);
+    if (event.once) {
+        client.once(event.name, (...args) => event.execute(...args));
+    }else {
+        client.on(event.name, (...args) => event.execute(...args));
+    }
+}
 
-client.once('ready', () => {
-    client.user.setActivity('Loading...')
-    //run every 5 minutes
-    setInterval(() => {
-        const randomIndex = Math.floor(Math.random() * (activities.length -1) + 1);
-        const newActivity = activities[randomIndex]
-        client.user.setActivity(newActivity)
-    }, 300000);
-    console.log("Logged in as " + client.user.username + "#" + client.user.discriminator);
-});
 client.login(token);
