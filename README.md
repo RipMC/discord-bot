@@ -1,2 +1,2 @@
 # discord-bot
-Dummy discord bot for RipMC
+A not so dumb discord bot for RipMC
