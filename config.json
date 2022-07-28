@@ -1,3 +1,6 @@
 {
-  "token": "INSERT-YOUR-TOKEN-HERE"
+  "token": "INSERT-YOUR-TOKEN-HERE",
+  "embedColor": "PUT-A-COLOR-HERE",
+  "clientId": "PUT-YOUR-CLIENT-ID-HERE",
+  "guildId": "PUT-YOUR-GUILD-ID-HERE"
 }
